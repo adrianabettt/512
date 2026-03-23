@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade — Operação E (Conjunção)</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f7ff;
+    --card: #ffffff;
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --accent: #f59e0b;
+    --accent-light: #fef3c7;
+    --correct: #16a34a;
+    --correct-light: #dcfce7;
+    --wrong: #dc2626;
+    --wrong-light: #fee2e2;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+    background-image: radial-gradient(circle at 20% 20%, #bfdbfe 0%, transparent 40%),
+                      radial-gradient(circle at 80% 80%, #fde68a 0%, transparent 40%);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(26px, 5vw, 40px);
+    color: var(--primary);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 6px;
+    font-weight: 600;
+  }
+
+  .tip-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #92400e;
+    margin-top: 12px;
+  }
+
+  .student-info {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    max-width: 680px;
+    margin: 0 auto 28px;
+  }
+
+  .field {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .field input {
+    width: 100%;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    background: white;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .field input:focus { border-color: var(--primary); }
+
+  .questions {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .question-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+  }
+
+  .question-card.answered-correct {
+    border-color: var(--correct);
+    background: var(--correct-light);
+  }
+
+  .question-card.answered-wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-light);
+  }
+
+  .question-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .q-number {
+    background: var(--primary);
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 15px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .q-text {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .q-text .op-e {
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 16px;
+  }
+
+  .options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .opt-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px 20px;
+    border: 2.5px solid var(--border);
+    border-radius: 10px;
+    background: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--text);
+  }
+
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary);
+    transform: translateY(-1px);
+  }
+
+  .opt-btn.selected-correct {
+    background: var(--correct);
+    border-color: var(--correct);
+    color: white;
+  }
+
+  .opt-btn.selected-wrong {
+    background: var(--wrong);
+    border-color: var(--wrong);
+    color: white;
+  }
+
+  .opt-btn.show-correct {
+    background: var(--correct);
+    border-color: var(--correct);
+    color: white;
+  }
+
+  .opt-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    display: none;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+
+  .feedback.show { display: flex; }
+
+  .feedback.correct {
+    background: #bbf7d0;
+    color: #14532d;
+  }
+
+  .feedback.wrong {
+    background: #fecaca;
+    color: #7f1d1d;
+  }
+
+  .actions {
+    max-width: 680px;
+    margin: 28px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .btn-check {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 40px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+  }
+
+  .btn-check:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+  .btn-check:active { transform: translateY(0); }
+
+  .btn-reset {
+    background: transparent;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 28px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-reset:hover { border-color: var(--muted); color: var(--text); }
+
+  .result-box {
+    display: none;
+    background: white;
+    border: 3px solid var(--primary);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    width: 100%;
+    animation: popIn 0.4s ease;
+  }
+
+  .result-box.show { display: block; }
+
+  @keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .result-score {
+    font-family: 'Fredoka One', cursive;
+    font-size: 52px;
+    color: var(--primary);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .result-label {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .result-msg {
+    font-size: 15px;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+
+  .stars {
+    font-size: 30px;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 999px;
+    height: 10px;
+    margin: 12px 0 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--primary);
+    transition: width 0.8s ease;
+  }
+
+  .lembrete {
+    max-width: 680px;
+    margin: 24px auto 0;
+    background: var(--primary-light);
+    border: 2px solid #93c5fd;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .lembrete-icon { font-size: 24px; flex-shrink: 0; }
+
+  .lembrete-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e40af;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 480px) {
+    .opt-btn { min-width: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">🖥️ Pensamento Computacional</div>
+  <h1>Operação E (Conjunção)</h1>
+  <p class="subtitle">Leia cada sentença e marque se ela é Verdadeira ou Falsa.</p>
+  <div class="tip-box">
+    💡 O <strong>E</strong> só é verdadeiro quando as <strong>duas partes</strong> são verdadeiras!
+  </div>
+</header>
+
+<div class="student-info">
+  <div class="field">
+    <label>Nome</label>
+    <input type="text" placeholder="Digite seu nome...">
+  </div>
+  <div class="field" style="max-width:180px">
+    <label>Data</label>
+    <input type="date">
+  </div>
+</div>
+
+<div class="questions" id="questions"></div>
+
+<div class="actions">
+  <button class="btn-check" onclick="corrigir()">✅ Corrigir Atividade</button>
+  <div class="result-box" id="result"></div>
+  <button class="btn-reset" onclick="reiniciar()">🔄 Recomeçar</button>
+</div>
+
+<div class="lembrete">
+  <span class="lembrete-icon">📌</span>
+  <span class="lembrete-text">
+    Lembre-se: a operação <strong>E</strong> é como uma exigência dupla — as <strong>duas condições</strong> precisam ser verdadeiras ao mesmo tempo. Se qualquer uma for falsa, o resultado é <strong>falso</strong>.
+  </span>
+</div>
+
+<script>
+const questoes = [
+  {
+    texto: 'O Brasil fica na América do Sul <span class="op-e">E</span> a Argentina também fica na América do Sul.',
+    resposta: 'V',
+    explicacao: '✅ As duas partes são verdadeiras, então o E é verdadeiro.'
+  },
+  {
+    texto: 'Cachorro é um animal <span class="op-e">E</span> cachorro consegue voar.',
+    resposta: 'F',
+    explicacao: '❌ A segunda parte é falsa (cachorro não voa), então o E é falso.'
+  },
+  {
+    texto: '5 + 5 = 10 <span class="op-e">E</span> 2 + 2 = 4.',
+    resposta: 'V',
+    explicacao: '✅ As duas contas estão corretas, então o E é verdadeiro.'
+  },
+  {
+    texto: 'Peixe vive na água <span class="op-e">E</span> pássaro consegue voar.',
+    resposta: 'V',
+    explicacao: '✅ As duas partes são verdadeiras, então o E é verdadeiro.'
+  },
+  {
+    texto: 'A Lua é maior que o Sol <span class="op-e">E</span> o Sol nasce de manhã.',
+    resposta: 'F',
+    explicacao: '❌ A primeira parte é falsa (a Lua é menor que o Sol), então o E é falso.'
+  },
+  {
+    texto: 'Janeiro é o primeiro mês do ano <span class="op-e">E</span> dezembro é o último mês do ano.',
+    resposta: 'V',
+    explicacao: '✅ As duas partes são verdadeiras, então o E é verdadeiro.'
+  },
+  {
+    texto: 'Gato é um réptil <span class="op-e">E</span> cobra é um réptil.',
+    resposta: 'F',
+    explicacao: '❌ A primeira parte é falsa (gato é mamífero), então o E é falso.'
+  },
+  {
+    texto: '3 + 3 = 6 <span class="op-e">E</span> 4 + 4 = 9.',
+    resposta: 'F',
+    explicacao: '❌ A segunda parte é falsa (4 + 4 = 8, não 9), então o E é falso.'
+  },
+  {
+    texto: 'A água é um líquido <span class="op-e">E</span> o gelo é um sólido.',
+    resposta: 'V',
+    explicacao: '✅ As duas partes são verdadeiras, então o E é verdadeiro.'
+  },
+  {
+    texto: 'Peixe vive na floresta <span class="op-e">E</span> pássaro vive no mar.',
+    resposta: 'F',
+    explicacao: '❌ As duas partes são falsas, então o E é falso.'
+  }
+];
+
+function renderizar() {
+  const container = document.getElementById('questions');
+  container.innerHTML = '';
+  questoes.forEach((q, i) => {
+    container.innerHTML += `
+      <div class="question-card" id="card-${i}">
+        <div class="question-header">
+          <div class="q-number">${i + 1}</div>
+          <div class="q-text">${q.texto}</div>
+        </div>
+        <div class="options">
+          <button class="opt-btn" id="btn-V-${i}" onclick="selecionar(${i}, 'V')">✔ Verdadeiro</button>
+          <button class="opt-btn" id="btn-F-${i}" onclick="selecionar(${i}, 'F')">✘ Falso</button>
+        </div>
+        <div class="feedback" id="feedback-${i}"></div>
+      </div>`;
+  });
+}
+
+const respostas = {};
+
+function selecionar(i, valor) {
+  const btnV = document.getElementById(`btn-V-${i}`);
+  const btnF = document.getElementById(`btn-F-${i}`);
+  btnV.classList.remove('selected-correct','selected-wrong');
+  btnF.classList.remove('selected-correct','selected-wrong');
+  respostas[i] = valor;
+  if (valor === 'V') btnV.style.background = '#dbeafe', btnV.style.borderColor = '#2563eb', btnV.style.color = '#1d4ed8';
+  else btnF.style.background = '#dbeafe', btnF.style.borderColor = '#2563eb', btnF.style.color = '#1d4ed8';
+  if (valor === 'F') { btnV.style.background = ''; btnV.style.borderColor = ''; btnV.style.color = ''; }
+  else { btnF.style.background = ''; btnF.style.borderColor = ''; btnF.style.color = ''; }
+}
+
+function corrigir() {
+  let acertos = 0;
+  questoes.forEach((q, i) => {
+    const card = document.getElementById(`card-${i}`);
+    const btnV = document.getElementById(`btn-V-${i}`);
+    const btnF = document.getElementById(`btn-F-${i}`);
+    const feedback = document.getElementById(`feedback-${i}`);
+    const resp = respostas[i];
+
+    btnV.disabled = true; btnF.disabled = true;
+    btnV.style = ''; btnF.style = '';
+
+    if (!resp) {
+      feedback.className = 'feedback show wrong';
+      feedback.innerHTML = '⚠️ Você não respondeu esta questão.';
+      card.className = 'question-card answered-wrong';
+      return;
+    }
+
+    const correto = resp === q.resposta;
+    if (correto) acertos++;
+
+    const btnCerto = document.getElementById(`btn-${q.resposta}-${i}`);
+    const btnErrado = resp !== q.resposta ? document.getElementById(`btn-${resp}-${i}`) : null;
+
+    btnCerto.classList.add('show-correct');
+    if (btnErrado) btnErrado.classList.add('selected-wrong');
+
+    feedback.className = `feedback show ${correto ? 'correct' : 'wrong'}`;
+    feedback.innerHTML = q.explicacao;
+    card.className = `question-card ${correto ? 'answered-correct' : 'answered-wrong'}`;
+  });
+
+  const pct = Math.round((acertos / questoes.length) * 100);
+  let emoji = acertos <= 4 ? '😕' : acertos <= 6 ? '🙂' : acertos <= 8 ? '😊' : '🌟';
+  let msg = acertos <= 4
+    ? 'Continue praticando, você consegue!'
+    : acertos <= 6
+    ? 'Bom trabalho! Revise as erradas.'
+    : acertos <= 8
+    ? 'Muito bem! Quase lá!'
+    : 'Parabéns! Você dominou a operação E!';
+  let cor = acertos <= 4 ? '#fee2e2' : acertos <= 6 ? '#fef3c7' : '#dcfce7';
+  let corText = acertos <= 4 ? '#7f1d1d' : acertos <= 6 ? '#92400e' : '#14532d';
+
+  const result = document.getElementById('result');
+  result.className = 'result-box show';
+  result.innerHTML = `
+    <div class="stars">${emoji}</div>
+    <div class="result-score">${acertos}/10</div>
+    <div class="result-label">questões corretas</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%" id="bar"></div></div>
+    <div style="font-size:13px;color:var(--muted);font-weight:700;margin-bottom:12px">${pct}% de aproveitamento</div>
+    <div class="result-msg" style="background:${cor};color:${corText}">${msg}</div>`;
+
+  setTimeout(() => {
+    document.getElementById('bar').style.width = pct + '%';
+  }, 100);
+
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function reiniciar() {
+  Object.keys(respostas).forEach(k => delete respostas[k]);
+  document.getElementById('result').className = 'result-box';
+  renderizar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderizar();
+</script>
+
+<footer style="text-align:center; margin-top:48px; padding: 20px 16px; border-top: 2px solid #e2e8f0; font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; color:#94a3b8; letter-spacing:0.5px; line-height:1.8;">
+  Material Pedagógico — Profª Adriana Bett Terebinto © 2026<br>
+  São Lourenço do Oeste — SC
+</footer>
+
+</body>
+</html>
